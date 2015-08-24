@@ -7,7 +7,7 @@
 #include <set>
 #include <utility>
 #define MOD 1298307964911120441ULL
-#define MAX_MEMMORY_SIZE 10000
+#define MAX_MEMMORY_SIZE 1000
 typedef unsigned long long int lli; 
 using namespace std;
 
@@ -214,7 +214,6 @@ int main()
 	{
 		pair<int,lli> topElement = *nextMoves.begin();
 		nextMoves.erase(nextMoves.begin());
-		printMat(hashStore[topElement.second]);
 		finalState = addMoves(hashStore[topElement.second]);
 		if(finalState != -1)
 			break;
