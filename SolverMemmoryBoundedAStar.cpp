@@ -18,7 +18,7 @@ struct compare
        return l.first > r.first;
    }  
 };
-
+lli globalBestAnswer;
 // Global variables to store the path and hashes
 map<lli, vector<vector<int> > > hashStore;
 map<lli, lli> parent;
@@ -167,12 +167,13 @@ lli addMoves(vector<vector<int> > &config)
 						set<pair<int , lli> >::iterator it = nextMoves.end();
 						it--;
 						nextMoves.erase(it);
-						hashStore.erase(hashStore.find(te.second));
-						parentJump.erase(parentJump.find(te.second));
-						parent.erase(parent.find(te.second));
-						dist.erase(dist.find(te.second));
+						// hashStore.erase(hashStore.find(te.second));
+						// parentJump.erase(parentJump.find(te.second));
+						// parent.erase(parent.find(te.second));
+						// dist.erase(dist.find(te.second));
 					}
 					nextMoves.insert(make_pair(distinctColors + dist[newHashVal], newHashVal));
+					globalBestAnswer = newHashVal;
 					if(checkSolutionFound(newConfig))
 						return newHashVal;
 				}
@@ -185,6 +186,8 @@ lli addMoves(vector<vector<int> > &config)
 
 void printSolution(lli finalState)
 {
+	if(finalState==-1)
+		finalState = globalBestAnswer;
 	cout<<"The shortest path to the goal state is attained by the following jumps\n";
 	vector<pair<pair<int,int> ,pair<int,int> > > ans;
 	while(parent[finalState] != -1)
