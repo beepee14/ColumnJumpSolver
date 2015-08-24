@@ -7,7 +7,7 @@
 #include <set>
 #include <utility>
 #define MOD 1298307964911120441ULL
-#define MAX_MEMMORY_SIZE 100000
+#define MAX_MEMMORY_SIZE 10000
 typedef unsigned long long int lli; 
 using namespace std;
 
@@ -167,10 +167,10 @@ lli addMoves(vector<vector<int> > &config)
 						set<pair<int , lli> >::iterator it = nextMoves.end();
 						it--;
 						nextMoves.erase(it);
-						// hashStore.erase(hashStore.find(te.second));
-						// parentJump.erase(parentJump.find(te.second));
-						// parent.erase(parent.find(te.second));
-						// dist.erase(dist.find(te.second));
+						hashStore.erase(hashStore.find(te.second));
+						parentJump.erase(parentJump.find(te.second));
+						parent.erase(parent.find(te.second));
+						dist.erase(dist.find(te.second));
 					}
 					nextMoves.insert(make_pair(distinctColors + dist[newHashVal], newHashVal));
 					if(checkSolutionFound(newConfig))
@@ -201,7 +201,7 @@ void printSolution(lli finalState)
 
 int main()
 {
-	// freopen("input.txt","r",stdin);
+	cout<<"Enter the input:\n";
 	vector<vector<int> > initialConfiguration;
 	lli finalState;
 	getInitialConfiguration(initialConfiguration);
@@ -212,7 +212,6 @@ int main()
 	nextMoves.insert(make_pair(distinctColors, hashVal));
 	while(!nextMoves.empty())
 	{
-		// cout<<nextMoves.size()<<endl;
 		pair<int,lli> topElement = *nextMoves.begin();
 		nextMoves.erase(nextMoves.begin());
 		printMat(hashStore[topElement.second]);
@@ -220,6 +219,5 @@ int main()
 		if(finalState != -1)
 			break;
 	}
-	cout<<"here\n";
 	printSolution(finalState);
 }

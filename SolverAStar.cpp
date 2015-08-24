@@ -187,7 +187,7 @@ void printSolution(lli finalState)
 
 int main()
 {
-	// freopen("input.txt","r",stdin);
+	cout<<"Enter the input:\n";
 	vector<vector<int> > initialConfiguration;
 	lli finalState;
 	getInitialConfiguration(initialConfiguration);
