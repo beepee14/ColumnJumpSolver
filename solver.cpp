@@ -7,6 +7,7 @@
 #include <set>
 #include <utility>
 #define MOD 1298307964911120441ULL
+#define MAX_MEMMORY_SIZE 100000
 typedef unsigned long long int lli; 
 using namespace std;
 
@@ -21,9 +22,9 @@ struct compare
 // Global variables to store the path and hashes
 map<lli, vector<vector<int> > > hashStore;
 map<lli, lli> parent;
-map<lli, int> dist; 
+map<lli, int> dist;
 map<lli, pair<pair<int,int> ,pair<int,int> > > parentJump;
-priority_queue<pair<int, lli> ,vector<pair<int, lli> > , compare > nextMoves;
+set<pair<int, lli> > nextMoves;
 
 int numColors, dimMatrix;
 
@@ -151,14 +152,27 @@ lli addMoves(vector<vector<int> > &config)
 						currX += dirx[k];
 						currY += diry[k];
 					}
-					newConfig[currX][currY] = config[i][j]; 
+					newConfig[currX][currY] = config[i][j];
 					lli newHashVal = getHash(newConfig);
 					lli origHashVal = getHash(config);
+					if(parent.find(newHashVal) != parent.end())
+						continue;
 					parentJump[newHashVal] = make_pair(make_pair(i+1,j+1),make_pair(currX+1,currY+1));
 					dist[newHashVal] = dist[origHashVal] + 1;
 					parent[newHashVal] = origHashVal;
 					lli distinctColors = getNumberOfDistinctColors(newConfig) - 1;
-					nextMoves.push(make_pair(distinctColors + dist[newHashVal], newHashVal));
+					if(nextMoves.size() == MAX_MEMMORY_SIZE)
+					{
+						pair<int , lli> te = *nextMoves.rbegin();
+						set<pair<int , lli> >::iterator it = nextMoves.end();
+						it--;
+						nextMoves.erase(it);
+						// hashStore.erase(hashStore.find(te.second));
+						// parentJump.erase(parentJump.find(te.second));
+						// parent.erase(parent.find(te.second));
+						// dist.erase(dist.find(te.second));
+					}
+					nextMoves.insert(make_pair(distinctColors + dist[newHashVal], newHashVal));
 					if(checkSolutionFound(newConfig))
 						return newHashVal;
 				}
@@ -195,14 +209,17 @@ int main()
 	parent[hashVal] = -1;
 	dist[hashVal] = 0;
 	int distinctColors = getNumberOfDistinctColors(initialConfiguration) - 1;
-	nextMoves.push(make_pair(distinctColors, hashVal));
+	nextMoves.insert(make_pair(distinctColors, hashVal));
 	while(!nextMoves.empty())
 	{
-		pair<int,lli> topElement = nextMoves.top();
-		nextMoves.pop();
+		// cout<<nextMoves.size()<<endl;
+		pair<int,lli> topElement = *nextMoves.begin();
+		nextMoves.erase(nextMoves.begin());
+		printMat(hashStore[topElement.second]);
 		finalState = addMoves(hashStore[topElement.second]);
 		if(finalState != -1)
 			break;
 	}
+	cout<<"here\n";
 	printSolution(finalState);
 }
