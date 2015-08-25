@@ -7,7 +7,7 @@
 #include <set>
 #include <utility>
 #define MOD 1298307964911120441ULL
-#define MAX_MEMMORY_SIZE 1000
+#define MAX_MEMMORY_SIZE 5000
 typedef unsigned long long int lli; 
 using namespace std;
 
